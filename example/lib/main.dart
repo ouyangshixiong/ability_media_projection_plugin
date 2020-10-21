@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:ability_media_projection_plugin/ability_media_projection_plugin.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
+
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight
+  ]);
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatefulWidget {
   @override

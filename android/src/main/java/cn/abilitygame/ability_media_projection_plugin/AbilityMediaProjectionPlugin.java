@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -104,8 +105,9 @@ public class AbilityMediaProjectionPlugin implements FlutterPlugin, ActivityAwar
       mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
       mediaRecorder.setOutputFile( storePath + "test.mp4" );
       mediaRecorder.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-      mediaRecorder.setVideoFrameRate(30);
-//      mediaRecorder.setVideoEncodingBitRate(5*DISPLAY_HEIGHT*DISPLAY_WIDTH);
+      mediaRecorder.setVideoFrameRate(60);
+//      mediaRecorder.setOrientationHint(90);
+      mediaRecorder.setVideoEncodingBitRate(5*DISPLAY_HEIGHT*DISPLAY_WIDTH);
       mediaRecorder.prepare();
     } catch (Exception e) {
       Log.i( TAG, e.getMessage() );
@@ -173,7 +175,17 @@ public class AbilityMediaProjectionPlugin implements FlutterPlugin, ActivityAwar
     channel.setMethodCallHandler(this);
 
     mediaProjectionManager = (MediaProjectionManager) applicationContext.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+    int orientation = applicationContext.getResources().getConfiguration().orientation;
     DisplayMetrics displayMetrics = applicationContext.getResources().getDisplayMetrics();
+    if(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE == orientation ){
+      Log.i(TAG, "当前屏幕方向为横屏");
+//      DISPLAY_WIDTH = displayMetrics.heightPixels;
+//      DISPLAY_HEIGHT = displayMetrics.widthPixels;
+    }else{
+      Log.i(TAG, "当前屏幕方向为竖屏");
+//      DISPLAY_WIDTH = displayMetrics.widthPixels;
+//      DISPLAY_HEIGHT = displayMetrics.heightPixels;
+    }
     DISPLAY_WIDTH = displayMetrics.widthPixels;
     DISPLAY_HEIGHT = displayMetrics.heightPixels;
     DPI = displayMetrics.densityDpi;
